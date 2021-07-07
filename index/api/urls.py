@@ -4,7 +4,7 @@ from django.urls import path
 
 from .views.authentication import signup_view, login_view
 
-from .views.plat import IndexUserViewset
+from .views.plat import IndexUserViewset, UserProfileViewset
 # Create your urls here.
 
 urlpatterns = [
@@ -29,5 +29,12 @@ urlpatterns = [
             {"get": "retrieve", "put": "partial_update", "delete": "destroy"}
         ),
         name="level-users-detail",
+    ),
+     path(
+        "users/<int:pk>/profile",
+        UserProfileViewset.as_view(
+            {"get": "retrieve", "put": "partial_update", "delete": "destroy"}
+        ),
+        name="level-users-profile-detail",
     ),
 ]

@@ -1,1 +1,1 @@
-from .plat import (IndexUserViewset)
+from .plat import (IndexUserViewset, UserProfileViewset)

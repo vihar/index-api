@@ -130,3 +130,18 @@ USE_L10N = True
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+## JWT AUTH
+REST_FRAMEWORK = {
+    # ...
+    # inside the Rest framework settings dictionary, add the auth settings
+    # Authentication settings
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "index.utils.auth.SafeJWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+}

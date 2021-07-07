@@ -1,13 +1,9 @@
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
-from django.contrib.postgres.fields import JSONField
 from django.utils import timezone
 from django.conf import settings
 from ..mixins import TimeAuditModel
-
-
-
 
 class User(PermissionsMixin, AbstractBaseUser):
     id = models.BigAutoField(unique=True, primary_key=True)
@@ -43,7 +39,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     token = models.CharField(max_length=64, blank=True)
 
     onboard = models.BooleanField(default=False)
-    onboard_data = JSONField(null=True)
+    onboard_data = models.JSONField(null=True)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]
@@ -57,3 +53,31 @@ class User(PermissionsMixin, AbstractBaseUser):
     def save(self, *args, **kwargs):
         self.token = uuid.uuid4().hex + uuid.uuid4().hex
         super(User, self).save(*args, **kwargs)
+
+
+class UserProfileDetail(TimeAuditModel):
+
+    id = models.BigAutoField(unique=True, primary_key=True)
+
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
+
+    country = models.CharField(max_length=64, blank=True)
+    bio = models.TextField(blank=True)
+    organisation = models.CharField(max_length=255, blank=True, null=True)
+    role = models.CharField(max_length=255, blank=True, null=True)
+
+    # social
+    linkedin_url = models.TextField(blank=True)
+    facebook_url = models.TextField(blank=True)
+    twitter_url = models.TextField(blank=True)
+    insta_ur = models.TextField(blank=True)
+    reddit_url = models.TextField(blank=True)
+    interests_url = models.TextField(blank=True)
+
+    # other_url
+
+    profile_urls = models.JSONField(blank=True,null=True)
+
+    def __str__(self):
+        return self.username

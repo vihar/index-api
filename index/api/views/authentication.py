@@ -19,7 +19,7 @@ from django.core.mail import send_mail
 
 
 from index.api.serializers.users import UserSerializer
-from index.db.models import User
+from index.db.models import User, UserProfileDetail
 
 
 def generate_access_token(user):
@@ -123,6 +123,7 @@ def signup_view(request):
     user.set_password(password)
     user.save()
     serialized_user = UserSerializer(user).data
+    UserProfileDetail.objects.create(user=user)
     # https://stackoverflow.com/questions/31237042/whats-the-difference-between-select-related-and-prefetch-related-in-django-orm
 
     access_token = generate_access_token(user)

@@ -1,1 +1,1 @@
-from .base import User
+from .base import User, UserProfileDetail
